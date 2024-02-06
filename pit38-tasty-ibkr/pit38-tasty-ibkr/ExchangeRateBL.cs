@@ -11,9 +11,11 @@ namespace pit38_tasty_ibkr
 {
     internal class ExchangeRateBL
     {
-        private const string nbp_base_url = "http://api.nbp.pl/api/exchangerates/rates/a/"; 
-        
-        public async Task<ExchangeRates> GetResultFromNbpApi(string currencyCode, DateTime date)
+        public static ExchangeRateBL Inst = new ExchangeRateBL();
+
+        private const string nbp_base_url = "http://api.nbp.pl/api/exchangerates/rates/a/";
+
+        private async Task<ExchangeRates> GetResultFromNbpApi(string currencyCode, DateTime date)
         {
             var link = nbp_base_url + $"{currencyCode.ToLower()}/{date:yyyy-MM-dd}/";
             try
@@ -33,6 +35,33 @@ namespace pit38_tasty_ibkr
             }
         }
 
+        public Rate GetTradeExchangeRate(DateTime day, string currency, FallbackRateEnum fallbackDirection)
+        {
+            try
+            {
+                var rate = ExchangeRateDC.Inst.GetRate(currency, day);
+                
+                if (rate == null)
+                {
+                    var apiExchangeRates = GetResultFromNbpApi(currency, day).Result;
 
+                    ExchangeRateDC.Inst.AddRates(apiExchangeRates);
+                }
+
+                return rate;
+
+            }catch (BankHolidayException)
+            {
+                if (fallbackDirection == FallbackRateEnum.Backward)
+                {
+                    return GetTradeExchangeRate(day.AddDays(-1), currency, fallbackDirection);
+                }
+                else if (fallbackDirection == FallbackRateEnum.Forward)
+                {
+                    return GetTradeExchangeRate(day.AddDays(1), currency, fallbackDirection);
+                }
+                else throw new NotImplementedException();
+            }
+        }
     }
 }
