@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.IO;
 namespace pit38_tasty_ibkr.Model
 {
     public class ExchangeRates
     {
+        public const string FileName = "ExchangeRates";
         public string Table { get; set; }
         public string Currency { get; set; }
         public string Code { get; set; }
@@ -35,6 +36,45 @@ namespace pit38_tasty_ibkr.Model
             else
             {
                 Console.WriteLine("No rates available.");
+            }
+        }
+
+        public void Add(Rate rate)
+        {
+            if (Rates == null) Rates = new List<Rate>();
+
+            if(!Rates.Any(x => x.EffectiveDate == rate.EffectiveDate))
+            {
+                Rates.Add(rate);
+            }
+        }
+
+        public void Save()
+        {
+            if (string.IsNullOrEmpty(Code)) throw new Exception("Empty Code");
+
+            if(Rates != null)
+            {
+                Rates = Rates.OrderByDescending(x => x.EffectiveDate).ToList();
+            }
+            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+            
+            File.WriteAllText($"{FileName}_{Code}.json", json);
+        }
+
+        public static ExchangeRates Load(string code)
+        {
+            string path = $"{FileName}_{code}.json";
+
+            if (File.Exists(path))
+            {
+                string json = File.ReadAllText(path);
+               
+                return JsonConvert.DeserializeObject<ExchangeRates>(json);
+            }
+            else
+            {
+                return null;
             }
         }
     }

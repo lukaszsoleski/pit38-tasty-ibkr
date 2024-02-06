@@ -12,7 +12,7 @@ namespace pit38_tasty_ibkr
     internal class ExchangeRateBL
     {
         private const string nbp_base_url = "http://api.nbp.pl/api/exchangerates/rates/a/"; 
- 
+        
         public async Task<ExchangeRates> GetResultFromNbpApi(string currencyCode, DateTime date)
         {
             var link = nbp_base_url + $"{currencyCode.ToLower()}/{date:yyyy-MM-dd}/";
@@ -32,5 +32,7 @@ namespace pit38_tasty_ibkr
                 }
             }
         }
+
+
     }
 }
