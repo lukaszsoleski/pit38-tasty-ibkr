@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace pit38_tasty_ibkr
 {
-    class Program
+    internal class BankHolidayException : Exception
     {
-        static void Main(string[] args)
-        {
-             
-        }
     }
 }
