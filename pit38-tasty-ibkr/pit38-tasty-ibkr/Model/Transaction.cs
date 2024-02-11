@@ -28,18 +28,5 @@ namespace pit38_tasty_ibkr.Model
 
         public string TickerSymbol { get; set; }
 
-        
-        public DateTime GetCurrencyExchangeDate()
-        {
-            if (SettlementDate.HasValue)
-            {
-                return SettlementDate.Value.AddDays(-1);
-            }
-            else
-            {
-                return TransactionDate.AddDays(1);
-            }
-        }
-
     }
 }

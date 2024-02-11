@@ -8,6 +8,7 @@ namespace pit38_tasty_ibkr.Model
 {
     public enum AssetClassEnum
     {
+        Undefined,
         Option,
         Stock
     }

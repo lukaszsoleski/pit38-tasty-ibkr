@@ -8,7 +8,9 @@ namespace pit38_tasty_ibkr.Model
 {
     public enum TransactionTypeEnum
     {
+        UNDEFINED,
         SELL,
         BUY,
+        FEE,
     }
 }

@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using CsvHelper;
+using Newtonsoft.Json;
 using pit38_tasty_ibkr.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -102,5 +104,7 @@ namespace pit38_tasty_ibkr
             }
             return null;
         }
+
+   
     }
 }
