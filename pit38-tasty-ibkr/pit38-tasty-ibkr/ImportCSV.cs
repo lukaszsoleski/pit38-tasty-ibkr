@@ -17,8 +17,11 @@ namespace pit38_tasty_ibkr
 
             var file = GetDirectoryFiles().FirstOrDefault(x => x.StartsWith("tastytrade_transactions"));
 
-            if (string.IsNullOrEmpty(file)) return new List<TradeTT>();
-
+            if (string.IsNullOrEmpty(file))
+            {
+                Console.WriteLine("No tastytrade CSV found!");
+                return new List<TradeTT>();
+            }
             using (var reader = new StreamReader(file))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
@@ -26,6 +29,22 @@ namespace pit38_tasty_ibkr
             }
         }
 
+        public static IEnumerable<TradeIBKR> LoadIBKRTradeCSV()
+        {
+            var file = GetDirectoryFiles().FirstOrDefault(x => x.StartsWith("TradeConfirmation"));
+
+            if (string.IsNullOrEmpty(file))
+            {
+                Console.WriteLine("No IBKR CSV found!");
+                
+                return new List<TradeIBKR>();
+            }
+            using (var reader = new StreamReader(file))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                return csv.GetRecords<TradeIBKR>();
+            }
+        }
         public static string[] GetDirectoryFiles(string dir = null)
         {
             // Get the current directory

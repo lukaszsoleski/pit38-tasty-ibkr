@@ -99,12 +99,14 @@
     <Compile Include="Model\AssetClass.cs" />
     <Compile Include="Model\ExchangeRates.cs" />
     <Compile Include="Model\FallbackRateEnum.cs" />
+    <Compile Include="Model\TradeIBKR.cs" />
     <Compile Include="Model\TradeTT.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Transaction.cs" />
     <Compile Include="Model\TransactionTypeEnum.cs" />
     <Compile Include="SettlementDateBL.cs" />
+    <Compile Include="FIFOStockCalculator.cs" />
     <Compile Include="TransactionBL.cs" />
   </ItemGroup>
   <ItemGroup>

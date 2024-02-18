@@ -10,21 +10,23 @@ namespace pit38_tasty_ibkr
 {
     public class SettlementDateBL
     {
+        public static SettlementDateBL Inst = new SettlementDateBL();
+
         public const string HolidayAPI = "https://date.nager.at/api/v3/publicholidays/{0}/{1}";
 
         private List<Holiday> Holidays = new List<Holiday>();
-        public DateTime GetSettlementDate(Transaction transaction)
+        public DateTime GetSettlementDate(DateTime transactionDate, AssetClassEnum assetClass)
         {
             var forwardDays = 0;
-            if(transaction.AssetClass == AssetClassEnum.Option)
+            if(assetClass == AssetClassEnum.Option)
             {
                 forwardDays = 1;
-            }else if(transaction.AssetClass == AssetClassEnum.Stock)
+            }else if(assetClass == AssetClassEnum.Stock)
             {
                 forwardDays = 2;
             }
 
-            var currentDate = transaction.TransactionDate;
+            var currentDate =transactionDate;
             int i = 0; 
             
             while(i < forwardDays)

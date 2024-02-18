@@ -9,7 +9,51 @@ namespace pit38_tasty_ibkr
 {
     public class TransactionBL
     {
-        public List<Transaction> GetTastyTransactions()
+        public List<Transaction> GetTransactionsHistory()
+        {
+            var all = new List<Transaction>();
+
+            var ibkr = GetIBKRTransactions();
+
+            var tasty = GetTastyTransactions();
+
+            all.AddRange(tasty);
+            all.AddRange(ibkr);
+
+            all = all.OrderByDescending(x => x.TransactionDate).ToList();
+
+            return all;
+        }
+
+        private List<Transaction> GetIBKRTransactions()
+        {
+            var csv = ImportCSV.LoadIBKRTradeCSV().Where(x => !string.IsNullOrEmpty(x.TradeID)).ToList();
+
+            var transactions = new List<Transaction>();
+
+            foreach (var line in csv)
+            {
+                AssetClassEnum assetClass = GetInstrumentType(line);
+                var transaction = new Transaction()
+                {
+                    TransactionDate = line.TradeDate,
+                    TickerSymbol = line.UnderlyingSymbol,
+                    Amount = line.Proceeds,
+                    Quantity = line.Quantity,
+                    Fees = line.GetCommitions(),
+                    Price = line.Price,
+                    TransactionType = GetTransactionType(line),
+                    AssetClass = assetClass,
+                    Currency = line.CurrencyPrimary,
+                    CommissionCurrency = line.CommissionCurrency,
+                    SettlementDate = line.SettleDate
+                };
+
+                transactions.Add(transaction);
+            }
+            return transactions;
+        }
+        private List<Transaction> GetTastyTransactions()
         {
             var csv = ImportCSV.LoadTastyTradeCSV();
 
@@ -17,6 +61,7 @@ namespace pit38_tasty_ibkr
 
             foreach(var line in csv)
             {
+                AssetClassEnum assetClass = GetInstrumentType(line);
                 var transaction = new Transaction()
                 {
                     TransactionDate = line.Date,
@@ -26,8 +71,10 @@ namespace pit38_tasty_ibkr
                     Fees = line.Fees,
                     Price = line.AveragePrice,
                     TransactionType = GetTransactionType(line),
-                    AssetClass = GetInstrumentType(line),
+                    AssetClass = assetClass,
                     Currency = "USD",
+                    CommissionCurrency = "USD",
+                    SettlementDate = SettlementDateBL.Inst.GetSettlementDate(line.Date, assetClass)
                 };
 
                 transactions.Add(transaction);
@@ -52,7 +99,20 @@ namespace pit38_tasty_ibkr
                     }
             }
         }
-
+        private static TransactionTypeEnum GetTransactionType(TradeIBKR line)
+        {
+            switch (line.BuySell)
+            {
+                case "BUY":
+                    return TransactionTypeEnum.BUY;
+                case "SELL":
+                    return TransactionTypeEnum.SELL;
+                default:
+                    {
+                        return TransactionTypeEnum.UNDEFINED;
+                    }
+            }
+        }
         private static AssetClassEnum GetInstrumentType(TradeTT line)
         {
             switch (line.InstrumentType)
@@ -61,6 +121,21 @@ namespace pit38_tasty_ibkr
                     return AssetClassEnum.Option;
                 case "Equity":
                     return AssetClassEnum.Stock;
+                default:
+                    return AssetClassEnum.Undefined;
+            }
+        }
+
+        private static AssetClassEnum GetInstrumentType(TradeIBKR line)
+        {
+            switch (line.AssetClass)
+            {
+                case "OPT":
+                    return AssetClassEnum.Option;
+                case "STK":
+                    return AssetClassEnum.Stock;
+                case "BILL":
+                    return AssetClassEnum.Option;
                 default:
                     return AssetClassEnum.Undefined;
             }

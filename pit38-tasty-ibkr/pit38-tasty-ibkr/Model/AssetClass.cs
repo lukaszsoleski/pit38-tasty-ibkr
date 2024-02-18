@@ -10,6 +10,7 @@ namespace pit38_tasty_ibkr.Model
     {
         Undefined,
         Option,
+        Bill,
         Stock
     }
 }
