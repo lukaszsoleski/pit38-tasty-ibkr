@@ -19,6 +19,7 @@ namespace pit38_tasty_ibkr
         public void AddTransaction(Transaction transaction)
         {
             transactions.Add(transaction);
+
         }
 
         public void CalculateProfitOrLoss()
@@ -41,20 +42,20 @@ namespace pit38_tasty_ibkr
 
                     decimal quantityToSellFromThisBuy = Math.Min(remainingQuantityToSell, buyTransaction.Quantity);
           
-                    profitOrLoss += (sellTransaction.Price - buyTransaction.Price) * quantityToSellFromThisBuy;
+                    profitOrLoss += (sellTransaction.PricePLN - buyTransaction.PricePLN) * quantityToSellFromThisBuy;
 
                     remainingQuantityToSell -= quantityToSellFromThisBuy;
                     buyTransaction.Quantity -= quantityToSellFromThisBuy;
 
                     if(buyTransaction.Quantity == 0)
                     {
-                        profitOrLoss -= buyTransaction.Fees;
+                        profitOrLoss -= buyTransaction.FeesPLN;
                     }
                 }
 
-                profitOrLoss -= sellTransaction.Fees;
+                profitOrLoss -= sellTransaction.FeesPLN;
 
-                sellTransaction.ProfitLoss = profitOrLoss;
+                sellTransaction.SetProfitLossPLN(profitOrLoss);
             }
            
         }

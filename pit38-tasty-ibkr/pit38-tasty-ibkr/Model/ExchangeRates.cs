@@ -63,6 +63,6 @@ namespace pit38_tasty_ibkr.Model
 
         public DateTime EffectiveDate { get; set; }
 
-        public double Mid { get; set; }
+        public decimal Mid { get; set; }
     }
 }

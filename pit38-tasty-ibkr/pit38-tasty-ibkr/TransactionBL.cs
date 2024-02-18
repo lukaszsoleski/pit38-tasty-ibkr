@@ -49,7 +49,10 @@ namespace pit38_tasty_ibkr
                     SettlementDate = line.SettleDate
                 };
 
+                transaction.SetPLN();
+
                 transactions.Add(transaction);
+
             }
             return transactions;
         }
@@ -76,6 +79,7 @@ namespace pit38_tasty_ibkr
                     CommissionCurrency = "USD",
                     SettlementDate = SettlementDateBL.Inst.GetSettlementDate(line.Date, assetClass)
                 };
+                transaction.SetPLN();
 
                 transactions.Add(transaction);
             }
