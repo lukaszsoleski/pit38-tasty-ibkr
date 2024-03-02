@@ -18,7 +18,8 @@ namespace pit38_tasty_ibkr
 
         public void AddTransaction(Transaction transaction)
         {
-            transactions.Add(transaction);
+            if(transaction.AssetClass == AssetClassEnum.Stock)
+                transactions.Add(transaction);
 
         }
 

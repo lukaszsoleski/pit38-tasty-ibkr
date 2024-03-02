@@ -9,6 +9,7 @@ namespace pit38_tasty_ibkr
 {
     public class TransactionBL
     {
+        public static TransactionBL Inst = new TransactionBL();
         public List<Transaction> GetTransactionsHistory()
         {
             var all = new List<Transaction>();
@@ -36,7 +37,7 @@ namespace pit38_tasty_ibkr
                 AssetClassEnum assetClass = GetInstrumentType(line);
                 var transaction = new Transaction()
                 {
-                    TransactionDate = line.TradeDate,
+                    TransactionDate =  DateTime.Parse(line.TradeDate),
                     TickerSymbol = line.UnderlyingSymbol,
                     Amount = line.Proceeds,
                     Quantity = line.Quantity,
@@ -46,13 +47,14 @@ namespace pit38_tasty_ibkr
                     AssetClass = assetClass,
                     Currency = line.CurrencyPrimary,
                     CommissionCurrency = line.CommissionCurrency,
-                    SettlementDate = line.SettleDate
+                    SettlementDate = DateTime.Parse(line.SettleDate)
                 };
 
                 transaction.SetPLN();
 
                 transactions.Add(transaction);
 
+                Console.WriteLine(transaction);
             }
             return transactions;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvHelper.Configuration.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,7 @@ namespace pit38_tasty_ibkr.Model
         public string Multiplier { get; set; }
         public string Strike { get; set; }
         public string Expiry { get; set; }
+        [Name("Put/Call")]
         public string PutCall { get; set; }
         public string PrincipalAdjustFactor { get; set; }
         public string TransactionType { get; set; }
@@ -48,11 +50,13 @@ namespace pit38_tasty_ibkr.Model
         public string ExtExecID { get; set; }
         public string BlockID { get; set; }
         public string OrderTime { get; set; }
+        [Name("Date/Time")]
         public string DateTime { get; set; }
         public string ReportDate { get; set; }
-        public DateTime SettleDate { get; set; }
-        public DateTime TradeDate { get; set; }
+        public string SettleDate { get; set; }
+        public string TradeDate { get; set; }
         public string Exchange { get; set; }
+        [Name("Buy/Sell")]
         public string BuySell { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
@@ -87,6 +91,88 @@ namespace pit38_tasty_ibkr.Model
         public decimal GetCommitions()
         {
             return Commission + BrokerExecutionCommission + BrokerClearingCommission + ThirdPartyExecutionCommission + ThirdPartyClearingCommission + ThirdPartyRegulatoryCommission + OtherCommission;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"Symbol: {Symbol}");
+            sb.AppendLine($"ClientAccountID: {ClientAccountID}");
+            sb.AppendLine($"AccountAlias: {AccountAlias}");
+            sb.AppendLine($"Model: {Model}");
+            sb.AppendLine($"CurrencyPrimary: {CurrencyPrimary}");
+            sb.AppendLine($"AssetClass: {AssetClass}");
+            sb.AppendLine($"SubCategory: {SubCategory}");
+            sb.AppendLine($"Description: {Description}");
+            sb.AppendLine($"Conid: {Conid}");
+            sb.AppendLine($"SecurityID: {SecurityID}");
+            sb.AppendLine($"SecurityIDType: {SecurityIDType}");
+            sb.AppendLine($"CUSIP: {CUSIP}");
+            sb.AppendLine($"ISIN: {ISIN}");
+            sb.AppendLine($"FIGI: {FIGI}");
+            sb.AppendLine($"ListingExchange: {ListingExchange}");
+            sb.AppendLine($"UnderlyingConid: {UnderlyingConid}");
+            sb.AppendLine($"UnderlyingSymbol: {UnderlyingSymbol}");
+            sb.AppendLine($"UnderlyingSecurityID: {UnderlyingSecurityID}");
+            sb.AppendLine($"UnderlyingListingExchange: {UnderlyingListingExchange}");
+            sb.AppendLine($"Issuer: {Issuer}");
+            sb.AppendLine($"IssuerCountryCode: {IssuerCountryCode}");
+            sb.AppendLine($"Multiplier: {Multiplier}");
+            sb.AppendLine($"Strike: {Strike}");
+            sb.AppendLine($"Expiry: {Expiry}");
+            sb.AppendLine($"PutCall: {PutCall}");
+            sb.AppendLine($"PrincipalAdjustFactor: {PrincipalAdjustFactor}");
+            sb.AppendLine($"TransactionType: {TransactionType}");
+            sb.AppendLine($"TradeID: {TradeID}");
+            sb.AppendLine($"OrderID: {OrderID}");
+            sb.AppendLine($"ExecID: {ExecID}");
+            sb.AppendLine($"BrokerageOrderID: {BrokerageOrderID}");
+            sb.AppendLine($"OrderReference: {OrderReference}");
+            sb.AppendLine($"VolatilityOrderLink: {VolatilityOrderLink}");
+            sb.AppendLine($"ClearingFirmID: {ClearingFirmID}");
+            sb.AppendLine($"OrigTradePrice: {OrigTradePrice}");
+            sb.AppendLine($"OrigTradeDate: {OrigTradeDate}");
+            sb.AppendLine($"OrigTradeID: {OrigTradeID}");
+            sb.AppendLine($"ExtExecID: {ExtExecID}");
+            sb.AppendLine($"BlockID: {BlockID}");
+            sb.AppendLine($"OrderTime: {OrderTime}");
+            sb.AppendLine($"DateTime: {DateTime}");
+            sb.AppendLine($"ReportDate: {ReportDate}");
+            sb.AppendLine($"SettleDate: {SettleDate}");
+            sb.AppendLine($"TradeDate: {TradeDate}");
+            sb.AppendLine($"Exchange: {Exchange}");
+            sb.AppendLine($"BuySell: {BuySell}");
+            sb.AppendLine($"Quantity: {Quantity}");
+            sb.AppendLine($"Price: {Price}");
+            sb.AppendLine($"Amount: {Amount}");
+            sb.AppendLine($"Proceeds: {Proceeds}");
+            sb.AppendLine($"NetCash: {NetCash}");
+            sb.AppendLine($"NetCashWithBillable: {NetCashWithBillable}");
+            sb.AppendLine($"Commission: {Commission}");
+            sb.AppendLine($"BrokerExecutionCommission: {BrokerExecutionCommission}");
+            sb.AppendLine($"BrokerClearingCommission: {BrokerClearingCommission}");
+            sb.AppendLine($"ThirdPartyExecutionCommission: {ThirdPartyExecutionCommission}");
+            sb.AppendLine($"ThirdPartyClearingCommission: {ThirdPartyClearingCommission}");
+            sb.AppendLine($"ThirdPartyRegulatoryCommission: {ThirdPartyRegulatoryCommission}");
+            sb.AppendLine($"OtherCommission: {OtherCommission}");
+            sb.AppendLine($"CommissionCurrency: {CommissionCurrency}");
+            sb.AppendLine($"Tax: {Tax}");
+            sb.AppendLine($"Code: {Code}");
+            sb.AppendLine($"OrderType: {OrderType}");
+            sb.AppendLine($"LevelOfDetail: {LevelOfDetail}");
+            sb.AppendLine($"TraderID: {TraderID}");
+            sb.AppendLine($"IsAPIOrder: {IsAPIOrder}");
+            sb.AppendLine($"AllocatedTo: {AllocatedTo}");
+            sb.AppendLine($"AccruedInterest: {AccruedInterest}");
+            sb.AppendLine($"RFQID: {RFQID}");
+            sb.AppendLine($"SerialNumber: {SerialNumber}");
+            sb.AppendLine($"DeliveryType: {DeliveryType}");
+            sb.AppendLine($"CommodityType: {CommodityType}");
+            sb.AppendLine($"Fineness: {Fineness}");
+            sb.AppendLine($"Weight: {Weight}");
+
+            return sb.ToString();
         }
     }
 }
