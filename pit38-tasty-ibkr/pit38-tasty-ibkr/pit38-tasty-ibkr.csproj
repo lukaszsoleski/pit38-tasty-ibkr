@@ -94,6 +94,7 @@
     <Compile Include="BankHolidayException.cs" />
     <Compile Include="ExchangeRateBL.cs" />
     <Compile Include="ExchangeRateDC.cs" />
+    <Compile Include="Extensions\ValueTypeExtensions.cs" />
     <Compile Include="Holiday.cs" />
     <Compile Include="ImportCSV.cs" />
     <Compile Include="Model\AssetClass.cs" />

@@ -1,6 +1,7 @@
 ﻿using pit38_tasty_ibkr.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace pit38_tasty_ibkr
     public class TransactionBL
     {
         public static TransactionBL Inst = new TransactionBL();
+
         public List<Transaction> GetTransactionsHistory()
         {
             var all = new List<Transaction>();
@@ -37,17 +39,17 @@ namespace pit38_tasty_ibkr
                 AssetClassEnum assetClass = GetInstrumentType(line);
                 var transaction = new Transaction()
                 {
-                    TransactionDate =  DateTime.Parse(line.TradeDate),
-                    TickerSymbol = line.UnderlyingSymbol,
-                    Amount = line.Proceeds,
-                    Quantity = line.Quantity,
-                    Fees = line.GetCommitions(),
-                    Price = line.Price,
+                    TransactionDate = line.TradeDateT,
+                    TickerSymbol = string.IsNullOrEmpty(line.UnderlyingSymbol) ? line.Symbol : line.UnderlyingSymbol,
+                    Amount =  line.ProceedsNum,
+                    Quantity = line.QuantityNum,
+                    Commitions = line.GetCommitions(),
+                    Price = line.PriceNum,
                     TransactionType = GetTransactionType(line),
                     AssetClass = assetClass,
                     Currency = line.CurrencyPrimary,
                     CommissionCurrency = line.CommissionCurrency,
-                    SettlementDate = DateTime.Parse(line.SettleDate)
+                    SettlementDate = line.SettleDateT
                 };
 
                 transaction.SetPLN();
@@ -69,19 +71,21 @@ namespace pit38_tasty_ibkr
                 AssetClassEnum assetClass = GetInstrumentType(line);
                 var transaction = new Transaction()
                 {
-                    TransactionDate = line.Date,
+                    TransactionDate = DateTime.Parse(line.Date),
                     TickerSymbol = line.UnderlyingSymbol,
-                    Amount = line.Value,
-                    Quantity = line.Quantity,
-                    Fees = line.Fees,
-                    Price = line.AveragePrice,
+                    Amount = line.ValueNum,
+                    Quantity = line.QuantityNum,
+                    Commitions = line.FeesNum + line.CommissionsNum,
+                    Price = line.AveragePriceNum,
                     TransactionType = GetTransactionType(line),
                     AssetClass = assetClass,
                     Currency = "USD",
                     CommissionCurrency = "USD",
-                    SettlementDate = SettlementDateBL.Inst.GetSettlementDate(line.Date, assetClass)
+                    SettlementDate = SettlementDateBL.Inst.GetSettlementDate(DateTime.Parse(line.Date), assetClass)
                 };
                 transaction.SetPLN();
+                
+                Console.WriteLine(transaction);
 
                 transactions.Add(transaction);
             }

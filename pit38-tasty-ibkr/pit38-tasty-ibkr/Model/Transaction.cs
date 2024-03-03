@@ -23,7 +23,7 @@ namespace pit38_tasty_ibkr.Model
 
         public decimal Price { get; set; }
 
-        public decimal Fees { get; set; }
+        public decimal Commitions { get; set; }
 
         public AssetClassEnum AssetClass { get; set; }
 
@@ -70,7 +70,7 @@ namespace pit38_tasty_ibkr.Model
                 transaction.Amount,
                 transaction.Quantity,
                 transaction.Price,
-                transaction.Fees,
+                transaction.Commitions,
                 transaction.AssetClass,
                 transaction.TickerSymbol,
                 transaction.Rate,

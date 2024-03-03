@@ -1,6 +1,8 @@
 ﻿using CsvHelper.Configuration.Attributes;
+using pit38_tasty_ibkr.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +11,8 @@ namespace pit38_tasty_ibkr.Model
 {
     public class TradeIBKR
     {
+        const string dateFormat = "dd/MM/yyyy";
+
         public string Symbol { get; set; }
         public string ClientAccountID { get; set; }
         public string AccountAlias { get; set; }
@@ -54,23 +58,15 @@ namespace pit38_tasty_ibkr.Model
         public string DateTime { get; set; }
         public string ReportDate { get; set; }
         public string SettleDate { get; set; }
+        public DateTime SettleDateT => System.DateTime.ParseExact(SettleDate, dateFormat, CultureInfo.InvariantCulture);
+
         public string TradeDate { get; set; }
+        public DateTime TradeDateT => System.DateTime.ParseExact(TradeDate, dateFormat, CultureInfo.InvariantCulture);
         public string Exchange { get; set; }
         [Name("Buy/Sell")]
         public string BuySell { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public decimal Amount { get; set; }
-        public decimal Proceeds { get; set; }
         public string NetCash { get; set; }
         public string NetCashWithBillable { get; set; }
-        public decimal Commission { get; set; }
-        public decimal BrokerExecutionCommission { get; set; }
-        public decimal BrokerClearingCommission { get; set; }
-        public decimal ThirdPartyExecutionCommission { get; set; }
-        public decimal ThirdPartyClearingCommission { get; set; }
-        public decimal ThirdPartyRegulatoryCommission { get; set; }
-        public decimal OtherCommission { get; set; }
         public string CommissionCurrency { get; set; }
         public string Tax { get; set; }
         public string Code { get; set; }
@@ -87,10 +83,33 @@ namespace pit38_tasty_ibkr.Model
         public string Fineness { get; set; }
         public string Weight { get; set; }
 
+        public string Commission { get; set; }
+        public string BrokerExecutionCommission { get; set; }
+        public string BrokerClearingCommission { get; set; }
+        public string ThirdPartyExecutionCommission { get; set; }
+        public string ThirdPartyClearingCommission { get; set; }
+        public string ThirdPartyRegulatoryCommission { get; set; }
+
+        public string Quantity { get; set; }
+        public string Price { get; set; }
+        public string Amount { get; set; }
+        public string Proceeds { get; set; }
+        public string OtherCommission { get; set; }
+        public decimal CommissionNum => Math.Abs(Commission.ConvertToDecimal());
+        public decimal BrokerExecutionCommissionNum => Math.Abs(BrokerExecutionCommission.ConvertToDecimal());
+        public decimal BrokerClearingCommissionNum => Math.Abs(BrokerClearingCommission.ConvertToDecimal());
+        public decimal ThirdPartyExecutionCommissionNum => Math.Abs(ThirdPartyExecutionCommission.ConvertToDecimal());
+        public decimal ThirdPartyClearingCommissionNum => Math.Abs(ThirdPartyClearingCommission.ConvertToDecimal());
+        public decimal ThirdPartyRegulatoryCommissionNum => Math.Abs(ThirdPartyRegulatoryCommission.ConvertToDecimal());
+        public decimal OtherCommissionNum => Math.Abs(OtherCommission.ConvertToDecimal());
+        public decimal QuantityNum => Math.Abs(Quantity.ConvertToDecimal());
+        public decimal PriceNum => Math.Abs(Price.ConvertToDecimal());
+        public decimal AmountNum => Math.Abs(Amount.ConvertToDecimal());
+        public decimal ProceedsNum => Math.Abs(Proceeds.ConvertToDecimal());
 
         public decimal GetCommitions()
         {
-            return Commission + BrokerExecutionCommission + BrokerClearingCommission + ThirdPartyExecutionCommission + ThirdPartyClearingCommission + ThirdPartyRegulatoryCommission + OtherCommission;
+            return CommissionNum + BrokerExecutionCommissionNum + BrokerClearingCommissionNum + ThirdPartyExecutionCommissionNum + ThirdPartyClearingCommissionNum + ThirdPartyRegulatoryCommissionNum + OtherCommissionNum;
         }
 
         public override string ToString()

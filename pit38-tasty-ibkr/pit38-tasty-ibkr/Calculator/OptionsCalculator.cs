@@ -14,7 +14,6 @@ namespace pit38_tasty_ibkr
         public OptionsCalculator()
         {
             transactions = new List<Transaction>();
-
         }
         public void AddTransaction(Transaction transaction)
         {
