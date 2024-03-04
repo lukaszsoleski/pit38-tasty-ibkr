@@ -48,35 +48,21 @@ namespace pit38_tasty_ibkr.Model
         {
             ProfitLossPLN = profitLoss;
         }
-        public static void PrintTransactions(List<Transaction> transactions)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("{0,-20} {1,-20} {2,-20} {3,-10} {4,-10} {5,-10} {6,-10} {7,-10} {8,-10} {9,-15} {10,-15} {11,-15} {12,-10}");
-            foreach (var transaction in transactions)
-            {
-                sb.AppendLine(GetFormattedString(transaction));
-            }
-            Console.WriteLine(sb.ToString());
-        }
-        public static string GetFormattedString(Transaction transaction)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("{0,-20} {1,-20} {2,-20} {3,-10} {4,-10} {5,-10} {6,-10} {7,-10} {8,-10} {9,-15} {10,-15} {11,-15} {12,-10} ",
-                transaction.TransactionType,
-                transaction.TransactionDate.ToString("yyyy-MM-dd"),
-                transaction.SettlementDate.ToString("yyyy-MM-dd"),
-                transaction.Currency,
-                transaction.CommissionCurrency,
-                transaction.Amount,
-                transaction.Quantity,
-                transaction.Price,
-                transaction.Commitions,
-                transaction.AssetClass,
-                transaction.TickerSymbol,
-                transaction.Rate,
-                transaction.AmountPLN);
-            return sb.ToString();
-        }
 
+        public override string ToString()
+        {
+            return $"Transaction Type: {TransactionType}, " +
+                   $"Ticker Symbol: {TickerSymbol}, " +
+                   $"Transaction Date: {TransactionDate}, " +
+                   $"Settlement Date: {SettlementDate}, " +
+                   $"Currency: {Currency}, " +
+                   $"Com. Curr.: {CommissionCurrency}, " +
+                   $"Amount: {Amount}, " +
+                   $"Quantity: {Quantity}, " +
+                   $"Price: {Price}, " +
+                   $"Commissions: {Commitions}, " +
+                   $"Asset Class: {AssetClass}, " +
+                   $"Rate: {Rate}, ";
+        }
     }
 }

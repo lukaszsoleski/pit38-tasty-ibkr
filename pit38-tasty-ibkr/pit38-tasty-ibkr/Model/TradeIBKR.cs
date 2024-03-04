@@ -107,10 +107,7 @@ namespace pit38_tasty_ibkr.Model
         public decimal AmountNum => Math.Abs(Amount.ConvertToDecimal());
         public decimal ProceedsNum => Math.Abs(Proceeds.ConvertToDecimal());
 
-        public decimal GetCommitions()
-        {
-            return CommissionNum + BrokerExecutionCommissionNum + BrokerClearingCommissionNum + ThirdPartyExecutionCommissionNum + ThirdPartyClearingCommissionNum + ThirdPartyRegulatoryCommissionNum + OtherCommissionNum;
-        }
+
 
         public override string ToString()
         {

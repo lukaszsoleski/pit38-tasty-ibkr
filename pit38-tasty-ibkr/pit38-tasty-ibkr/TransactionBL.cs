@@ -30,7 +30,7 @@ namespace pit38_tasty_ibkr
 
         private List<Transaction> GetIBKRTransactions()
         {
-            var csv = ImportCSV.LoadIBKRTradeCSV().Where(x => !string.IsNullOrEmpty(x.TradeID)).ToList();
+            var csv = ImportCSV.LoadIBKRTradeCSV().Where(x => x.LevelOfDetail == "EXECUTION").ToList();
 
             var transactions = new List<Transaction>();
 
@@ -43,7 +43,7 @@ namespace pit38_tasty_ibkr
                     TickerSymbol = string.IsNullOrEmpty(line.UnderlyingSymbol) ? line.Symbol : line.UnderlyingSymbol,
                     Amount =  line.ProceedsNum,
                     Quantity = line.QuantityNum,
-                    Commitions = line.GetCommitions(),
+                    Commitions = line.CommissionNum,
                     Price = line.PriceNum,
                     TransactionType = GetTransactionType(line),
                     AssetClass = assetClass,
@@ -51,10 +51,8 @@ namespace pit38_tasty_ibkr
                     CommissionCurrency = line.CommissionCurrency,
                     SettlementDate = line.SettleDateT
                 };
-
-                transaction.SetPLN();
-
-                transactions.Add(transaction);
+                if(assetClass != AssetClassEnum.Undefined)
+                    transactions.Add(transaction);
 
                 Console.WriteLine(transaction);
             }
@@ -83,7 +81,6 @@ namespace pit38_tasty_ibkr
                     CommissionCurrency = "USD",
                     SettlementDate = SettlementDateBL.Inst.GetSettlementDate(DateTime.Parse(line.Date), assetClass)
                 };
-                transaction.SetPLN();
                 
                 Console.WriteLine(transaction);
 
