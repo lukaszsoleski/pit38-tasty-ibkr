@@ -61,7 +61,7 @@ namespace pit38_tasty_ibkr
 
         private List<Holiday> GetHolidaysFromAPI(string country, string year)
         {
-            return GetHolidayAPILink(country, year).GetJsonAsync<List<Holiday>>().Result;
+            return GetHolidayAPILink(year, country).GetJsonAsync<List<Holiday>>().Result;
         }
 
         private List<Holiday> GetHolidays(string country, string year)

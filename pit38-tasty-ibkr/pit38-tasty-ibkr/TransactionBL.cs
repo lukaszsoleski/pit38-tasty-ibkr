@@ -49,7 +49,8 @@ namespace pit38_tasty_ibkr
                     AssetClass = assetClass,
                     Currency = line.CurrencyPrimary,
                     CommissionCurrency = line.CommissionCurrency,
-                    SettlementDate = line.SettleDateT
+                    SettlementDate = line.SettleDateT,
+                    Description = line.Description
                 };
                 if(assetClass != AssetClassEnum.Undefined)
                     transactions.Add(transaction);
@@ -79,12 +80,17 @@ namespace pit38_tasty_ibkr
                     AssetClass = assetClass,
                     Currency = "USD",
                     CommissionCurrency = "USD",
-                    SettlementDate = SettlementDateBL.Inst.GetSettlementDate(DateTime.Parse(line.Date), assetClass)
+                    Description = line.Description
                 };
                 
                 Console.WriteLine(transaction);
 
-                transactions.Add(transaction);
+                if(transaction.AssetClass != AssetClassEnum.Undefined)
+                {
+                    transaction.SettlementDate = SettlementDateBL.Inst.GetSettlementDate(DateTime.Parse(line.Date), assetClass);
+
+                    transactions.Add(transaction);
+                }
             }
 
             return transactions;

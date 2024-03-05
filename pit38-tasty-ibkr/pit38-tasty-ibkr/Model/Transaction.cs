@@ -29,6 +29,7 @@ namespace pit38_tasty_ibkr.Model
 
         public string TickerSymbol { get; set; }
 
+        public string Description { get; set; }
         public Rate Rate { get; set; }
         
         public decimal AmountPLN { get; private set; }
