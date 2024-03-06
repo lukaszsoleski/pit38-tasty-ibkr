@@ -9,22 +9,26 @@ using System.Net;
 
 namespace pit38_tasty_ibkr
 {
-    internal class ExchangeRateBL
+    internal class ExchangeRateAPI
     {
-        public static ExchangeRateBL Inst = new ExchangeRateBL();
+        public static ExchangeRateAPI Inst = new ExchangeRateAPI();
 
         private const string nbp_base_url = "http://api.nbp.pl/api/exchangerates/rates/a/";
 
-        private async Task<ExchangeRates> GetResultFromNbpApi(string currencyCode, DateTime date)
+        private ExchangeRates GetResultFromNbpApi(string currencyCode, DateTime date)
         {
             var link = nbp_base_url + $"{currencyCode.ToLower()}/{date:yyyy-MM-dd}/";
+
+            ExchangeRates r = null;
             try
             {
-                return await link.GetJsonAsync<ExchangeRates>();
+                var tmp = link.GetJsonAsync<ExchangeRates>();
+
+                r = tmp.Result;
             }
-            catch (FlurlHttpException ex)
+            catch (Exception ex)
             {
-                if (ex.StatusCode == (int)HttpStatusCode.NotFound)
+                if (ex is FlurlHttpException && ((FlurlHttpException)ex).StatusCode == (int)HttpStatusCode.NotFound)
                 {
                     throw new BankHolidayException();
                 }
@@ -33,19 +37,23 @@ namespace pit38_tasty_ibkr
                     throw ex;
                 }
             }
+
+            return r;
         }
 
         public Rate GetTradeExchangeRate(DateTime day, string currency, FallbackRateEnum fallbackDirection)
         {
             try
             {
-                var rate = ExchangeRateDC.Inst.GetRate(currency, day);
+                var rate = ExchangeRateCache.Inst.GetRate(currency, day);
                 
                 if (rate == null)
                 {
-                    var apiExchangeRates = GetResultFromNbpApi(currency, day).Result;
+                    var apiExchangeRates = GetResultFromNbpApi(currency, day);
 
-                    ExchangeRateDC.Inst.AddRates(apiExchangeRates);
+                    ExchangeRateCache.Inst.AddRates(apiExchangeRates);
+
+                    rate = apiExchangeRates.Rates.Single();
                 }
 
                 return rate;

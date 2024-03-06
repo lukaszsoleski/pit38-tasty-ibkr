@@ -10,7 +10,7 @@ namespace pit38_tasty_ibkr
     public class FIFOStockCalculator
     {
         private List<Transaction> transactions;
-
+        public List<Transaction> Transactions => transactions ?? new List<Transaction>();
         public FIFOStockCalculator()
         {
             transactions = new List<Transaction>();

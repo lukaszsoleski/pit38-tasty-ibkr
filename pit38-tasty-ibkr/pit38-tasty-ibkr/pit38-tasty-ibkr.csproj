@@ -91,26 +91,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankHolidayException.cs" />
-    <Compile Include="ExchangeRateBL.cs" />
-    <Compile Include="ExchangeRateDC.cs" />
-    <Compile Include="Extensions\ValueTypeExtensions.cs" />
-    <Compile Include="Holiday.cs" />
-    <Compile Include="ImportCSV.cs" />
-    <Compile Include="Model\AssetClass.cs" />
-    <Compile Include="Model\ExchangeRates.cs" />
-    <Compile Include="Model\FallbackRateEnum.cs" />
-    <Compile Include="Model\TradeIBKR.cs" />
-    <Compile Include="Model\TradeTT.cs" />
-    <Compile Include="Calculator\OptionsCalculator.cs" />
+    <Compile Include="BL\Exceptons\BankHolidayException.cs" />
+    <Compile Include="BL\API\ExchangeRateAPI.cs" />
+    <Compile Include="BL\API\ExchangeRateCache.cs" />
+    <Compile Include="BL\Extensions\ValueTypeExtensions.cs" />
+    <Compile Include="BL\Models\Holiday.cs" />
+    <Compile Include="BL\Models\AssetClass.cs" />
+    <Compile Include="BL\Models\ExchangeRates.cs" />
+    <Compile Include="BL\Models\FallbackRateEnum.cs" />
+    <Compile Include="BL\Models\TradeIBKR.cs" />
+    <Compile Include="BL\Models\TradeTT.cs" />
+    <Compile Include="BL\Calculators\OptionsCalculator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Transaction.cs" />
-    <Compile Include="Model\TransactionTypeEnum.cs" />
-    <Compile Include="SettlementDateBL.cs" />
-    <Compile Include="Calculator\FIFOStockCalculator.cs" />
-    <Compile Include="Calculator\TBillCalculator.cs" />
-    <Compile Include="TransactionBL.cs" />
+    <Compile Include="BL\Models\Transaction.cs" />
+    <Compile Include="BL\Models\TransactionTypeEnum.cs" />
+    <Compile Include="BL\API\SettlementDateAPI.cs" />
+    <Compile Include="BL\Calculators\FIFOStockCalculator.cs" />
+    <Compile Include="BL\Calculators\TBillCalculator.cs" />
+    <Compile Include="BL\CSV\TransactionsCSV.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

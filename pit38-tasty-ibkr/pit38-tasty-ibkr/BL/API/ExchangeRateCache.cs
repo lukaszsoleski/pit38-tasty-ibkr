@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace pit38_tasty_ibkr
 {
-    public class ExchangeRateDC : IDisposable
+    public class ExchangeRateCache : IDisposable
     {
         public const string FileName = "ExchangeRates";
 
-        public static ExchangeRateDC Inst = new ExchangeRateDC();
+        public static ExchangeRateCache Inst = new ExchangeRateCache();
 
         private Dictionary<string, ExchangeRates> exchangeRates = new Dictionary<string, ExchangeRates>();
 

@@ -1,16 +1,20 @@
-﻿using pit38_tasty_ibkr.Model;
+﻿using CsvHelper;
+using pit38_tasty_ibkr.Model;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace pit38_tasty_ibkr
 {
-    public class TransactionBL
+    public class TransactionsCSV
     {
-        public static TransactionBL Inst = new TransactionBL();
+        private const string CSV_DIR = @"D:\ibkr-tasty-history";
+
+        public static TransactionsCSV Inst = new TransactionsCSV();
 
         public List<Transaction> GetTransactionsHistory()
         {
@@ -30,7 +34,7 @@ namespace pit38_tasty_ibkr
 
         private List<Transaction> GetIBKRTransactions()
         {
-            var csv = ImportCSV.LoadIBKRTradeCSV().Where(x => x.LevelOfDetail == "EXECUTION").ToList();
+            var csv = LoadIBKRTradeCSV().Where(x => x.LevelOfDetail == "EXECUTION").ToList();
 
             var transactions = new List<Transaction>();
 
@@ -55,13 +59,12 @@ namespace pit38_tasty_ibkr
                 if(assetClass != AssetClassEnum.Undefined)
                     transactions.Add(transaction);
 
-                Console.WriteLine(transaction);
             }
             return transactions;
         }
         private List<Transaction> GetTastyTransactions()
         {
-            var csv = ImportCSV.LoadTastyTradeCSV();
+            var csv = LoadTastyTradeCSV();
 
             var transactions = new List<Transaction>();
 
@@ -82,12 +85,10 @@ namespace pit38_tasty_ibkr
                     CommissionCurrency = "USD",
                     Description = line.Description
                 };
-                
-                Console.WriteLine(transaction);
 
-                if(transaction.AssetClass != AssetClassEnum.Undefined)
+                if(transaction.AssetClass != AssetClassEnum.Undefined && transaction.TransactionType != TransactionTypeEnum.UNDEFINED)
                 {
-                    transaction.SettlementDate = SettlementDateBL.Inst.GetSettlementDate(DateTime.Parse(line.Date), assetClass);
+                    transaction.SettlementDate = SettlementDateAPI.Inst.GetSettlementDate(DateTime.Parse(line.Date), assetClass);
 
                     transactions.Add(transaction);
                 }
@@ -152,6 +153,55 @@ namespace pit38_tasty_ibkr
                 default:
                     return AssetClassEnum.Undefined;
             }
+        }
+
+        private static IEnumerable<TradeTT> LoadTastyTradeCSV()
+        {
+            // Get the current directory
+
+            var files = GetDirectoryFiles().Select(x => new FileInfo(x));
+
+            var file = files.FirstOrDefault(x => x.Name.StartsWith("tastytrade_transactions"));
+
+            if (file == null)
+            {
+                Console.WriteLine("No tastytrade CSV found!");
+                return new List<TradeTT>();
+            }
+            using (var reader = new StreamReader(file.FullName))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                return csv.GetRecords<TradeTT>().ToList();
+            }
+        }
+
+        private static IEnumerable<TradeIBKR> LoadIBKRTradeCSV()
+        {
+            var files = GetDirectoryFiles().Select(x => new FileInfo(x));
+
+            var file = files.FirstOrDefault(x => x.Name.StartsWith("TradeConfirmation"));
+
+            if (file == null)
+            {
+                Console.WriteLine("No IBKR CSV found!");
+
+                return new List<TradeIBKR>();
+            }
+            using (var reader = new StreamReader(file.FullName))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                return csv.GetRecords<TradeIBKR>().ToList();
+            }
+        }
+        private static string[] GetDirectoryFiles(string dir = null)
+        {
+            // Get the current directory
+            string currentDirectory = dir ?? CSV_DIR;
+
+            // Get files from the current directory
+            string[] files = Directory.GetFiles(currentDirectory);
+
+            return files;
         }
     }
 }

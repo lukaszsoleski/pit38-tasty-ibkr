@@ -30,17 +30,19 @@ namespace pit38_tasty_ibkr.Model
         public string TickerSymbol { get; set; }
 
         public string Description { get; set; }
-        public Rate Rate { get; set; }
+        public Rate Rate { get; private set; }
         
         public decimal AmountPLN { get; private set; }
         public decimal PricePLN { get; private set; }
         public decimal FeesPLN { get; private set; }
         public decimal ProfitLossPLN { get; private set; }
         
-        public void SetPLN()
+        public void SetRate(Rate rate)
         {
             if (Rate == null) return;
-
+            
+            Rate = rate;
+            
             AmountPLN = Math.Round(Amount * Rate.Mid, 4);
             PricePLN = Math.Round(Price * Rate.Mid, 4);
             FeesPLN = Math.Round(Price * Rate.Mid, 4);

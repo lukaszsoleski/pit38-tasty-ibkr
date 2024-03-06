@@ -8,9 +8,9 @@ using Flurl.Http;
 using System.Net;
 namespace pit38_tasty_ibkr
 {
-    public class SettlementDateBL
+    public class SettlementDateAPI
     {
-        public static SettlementDateBL Inst = new SettlementDateBL();
+        public static SettlementDateAPI Inst = new SettlementDateAPI();
 
         public const string HolidayAPI = "https://date.nager.at/api/v3/publicholidays/{0}/{1}";
 
