@@ -39,8 +39,6 @@ namespace pit38_tasty_ibkr.Model
         
         public void SetRate(Rate rate)
         {
-            if (Rate == null) return;
-            
             Rate = rate;
             
             AmountPLN = Math.Round(Amount * Rate.Mid, 4);

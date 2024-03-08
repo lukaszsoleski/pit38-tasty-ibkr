@@ -28,7 +28,8 @@ namespace pit38_tasty_ibkr
             }
             catch (Exception ex)
             {
-                if (ex is FlurlHttpException && ((FlurlHttpException)ex).StatusCode == (int)HttpStatusCode.NotFound)
+                FlurlHttpException flurlHttpException = ex as FlurlHttpException ?? ex?.InnerException as FlurlHttpException;
+                if (flurlHttpException != null && flurlHttpException.StatusCode == (int)HttpStatusCode.NotFound)
                 {
                     throw new BankHolidayException();
                 }
