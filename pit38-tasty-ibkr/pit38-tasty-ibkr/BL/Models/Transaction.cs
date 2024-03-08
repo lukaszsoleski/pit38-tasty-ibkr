@@ -43,11 +43,17 @@ namespace pit38_tasty_ibkr.Model
         public void SetRate(Rate rate)
         {
             Rate = rate;
-            
+
+            CalculatePLN();
+        }
+
+        private void CalculatePLN()
+        {
             AmountPLN = Math.Round(Amount * Rate.Mid, 4);
             PricePLN = Math.Round(Price * Rate.Mid, 4);
             FeesPLN = Math.Round(Commitions * Rate.Mid, 4);
         }
+
         public void SetProfitLossPLN(decimal profitLoss)
         {
             ProfitLossPLN = profitLoss;

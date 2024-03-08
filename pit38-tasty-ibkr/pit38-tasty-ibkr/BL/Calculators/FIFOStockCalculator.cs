@@ -61,6 +61,8 @@ namespace pit38_tasty_ibkr
 
                     buyReference.Commitions = buyTransaction.Quantity > 0 ? 0 : buyTransaction.Commitions;
 
+                    buyReference.CalculatePLN();
+
                     sellTransaction.BuyReference.Add(buyReference);
                 }
 
