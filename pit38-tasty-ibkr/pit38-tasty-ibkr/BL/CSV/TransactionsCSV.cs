@@ -74,7 +74,7 @@ namespace pit38_tasty_ibkr
                 var transaction = new Transaction()
                 {
                     TransactionDate = DateTime.Parse(line.Date),
-                    TickerSymbol = line.UnderlyingSymbol,
+                    TickerSymbol = string.IsNullOrEmpty(line.UnderlyingSymbol) ? line.Symbol : line.UnderlyingSymbol,
                     Amount = line.ValueNum,
                     Quantity = line.QuantityNum,
                     Commitions = line.FeesNum + line.CommissionsNum,

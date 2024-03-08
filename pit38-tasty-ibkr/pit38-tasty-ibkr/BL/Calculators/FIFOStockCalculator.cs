@@ -52,6 +52,16 @@ namespace pit38_tasty_ibkr
                     {
                         profitOrLoss -= buyTransaction.FeesPLN;
                     }
+
+                    var buyReference = buyTransaction.Copy();
+
+                    buyReference.Quantity = quantityToSellFromThisBuy;
+
+                    buyReference.Amount = quantityToSellFromThisBuy * buyReference.Price;
+
+                    buyReference.Commitions = buyTransaction.Quantity > 0 ? 0 : buyTransaction.Commitions;
+
+                    sellTransaction.BuyReference.Add(buyReference);
                 }
 
                 profitOrLoss -= sellTransaction.FeesPLN;

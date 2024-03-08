@@ -36,6 +36,9 @@ namespace pit38_tasty_ibkr.Model
         public decimal PricePLN { get; private set; }
         public decimal FeesPLN { get; private set; }
         public decimal ProfitLossPLN { get; private set; }
+
+        public List<Transaction> BuyReference { get; set; } = new List<Transaction>();
+
         
         public void SetRate(Rate rate)
         {
@@ -43,13 +46,34 @@ namespace pit38_tasty_ibkr.Model
             
             AmountPLN = Math.Round(Amount * Rate.Mid, 4);
             PricePLN = Math.Round(Price * Rate.Mid, 4);
-            FeesPLN = Math.Round(Price * Rate.Mid, 4);
+            FeesPLN = Math.Round(Commitions * Rate.Mid, 4);
         }
         public void SetProfitLossPLN(decimal profitLoss)
         {
             ProfitLossPLN = profitLoss;
         }
-
+        public Transaction Copy()
+        {
+            return new Transaction()
+            {
+                Amount = this.Amount,
+                AmountPLN = this.AmountPLN,
+                AssetClass = this.AssetClass,
+                CommissionCurrency = CommissionCurrency,
+                Commitions = Commitions,
+                Currency = Currency,
+                Description = Description,
+                FeesPLN = FeesPLN,
+                Price = Price,
+                PricePLN = PricePLN,
+                Quantity = Quantity,
+                Rate = Rate,
+                SettlementDate = SettlementDate,
+                TickerSymbol = TickerSymbol,
+                TransactionDate = TransactionDate,
+                TransactionType = TransactionType
+            };
+        }
         public override string ToString()
         {
             return $"Transaction Type: {TransactionType}, " +
