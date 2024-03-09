@@ -47,7 +47,7 @@ namespace pit38_tasty_ibkr.Model
             CalculatePLN();
         }
 
-        private void CalculatePLN()
+        public void CalculatePLN()
         {
             AmountPLN = Math.Round(Amount * Rate.Mid, 4);
             PricePLN = Math.Round(Price * Rate.Mid, 4);
