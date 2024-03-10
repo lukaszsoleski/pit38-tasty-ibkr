@@ -22,7 +22,20 @@ namespace pit38_tasty_ibkr
                 transactions.Add(transaction);
 
         }
+        public Tuple<decimal, decimal> GetTotalCostAndProfit(DateTime startDate, DateTime endDate)
+        {
+            var result = new Tuple<decimal, decimal>(0,0);
 
+            var sells = transactions.Where(x => x.TransactionDate.Date >= startDate && x.TransactionDate.Date <= endDate && x.ProfitLossPLN != 0);
+
+            var totalProfit = sells.Sum(x => x.AmountPLN);
+
+            var totalCost = sells.Sum(x => x.FeesPLN) + sells.SelectMany(x => x.BuyReference).Sum(x => x.AmountPLN + x.FeesPLN);
+
+            result = new Tuple<decimal, decimal>(totalCost, totalProfit);
+
+            return result;
+        }
         public void CalculateProfitOrLoss()
         {
    

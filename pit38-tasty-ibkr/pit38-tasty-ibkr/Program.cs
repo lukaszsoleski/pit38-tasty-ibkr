@@ -41,18 +41,11 @@ namespace pit38_tasty_ibkr
 
             fifoStockCalculator.CalculateProfitOrLoss();
 
-            var optionsTransactions = optionsCalculator.Transactions.Where(x => x.TransactionDate.Date >= StartDate && x.TransactionDate.Date <= EndDate).ToList();
+            var optionsCostProfit = optionsCalculator.GetTotalCostAndProfit(StartDate,EndDate);
 
-            var stockTransactions = fifoStockCalculator.Transactions.Where(x => x.TransactionDate.Date >= StartDate && x.TransactionDate.Date <= EndDate && x.ProfitLossPLN != 0);
-
-            var totalOptionsCost = optionsTransactions.Where(x => x.ProfitLossPLN < 0).Sum(x => x.ProfitLossPLN);
-
-            var totalOptionsProfit = optionsTransactions.Where(x => x.ProfitLossPLN > 0).Sum(x => x.ProfitLossPLN);
+            var stocksCostProfit = fifoStockCalculator.GetTotalCostAndProfit(StartDate, EndDate);
 
 
-
-            var optionsProfitOrLoss = optionsTransactions.Sum(x => x.ProfitLossPLN);
-            var stockProfitOrLoss = stockTransactions.Sum(x => x.ProfitLossPLN);
 
             ExchangeRateCache.Inst.Dispose();
 
