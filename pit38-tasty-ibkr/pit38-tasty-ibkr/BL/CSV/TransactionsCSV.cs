@@ -149,7 +149,7 @@ namespace pit38_tasty_ibkr
                 case "STK":
                     return AssetClassEnum.Stock;
                 case "BILL":
-                    return AssetClassEnum.Option;
+                    return AssetClassEnum.Bill;
                 default:
                     return AssetClassEnum.Undefined;
             }

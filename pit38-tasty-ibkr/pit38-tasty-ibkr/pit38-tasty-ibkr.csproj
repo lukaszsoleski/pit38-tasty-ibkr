@@ -99,6 +99,7 @@
     <Compile Include="BL\Models\AssetClass.cs" />
     <Compile Include="BL\Models\ExchangeRates.cs" />
     <Compile Include="BL\Models\FallbackRateEnum.cs" />
+    <Compile Include="BL\Models\TransactionsSummary.cs" />
     <Compile Include="BL\Models\TradeIBKR.cs" />
     <Compile Include="BL\Models\TradeTT.cs" />
     <Compile Include="BL\Calculators\OptionsCalculator.cs" />
