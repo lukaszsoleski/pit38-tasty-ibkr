@@ -1,4 +1,5 @@
-﻿using pit38_tasty_ibkr.Model;
+﻿using pit38_tasty_ibkr.BL.Models;
+using pit38_tasty_ibkr.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,13 +42,19 @@ namespace pit38_tasty_ibkr
 
             fifoStockCalculator.CalculateProfitOrLoss();
 
-            var optionsCostProfit = optionsCalculator.GetTotalCostAndProfit(StartDate,EndDate);
+            var optionsSummary = optionsCalculator.GetTotalCostAndProfit(StartDate,EndDate);
 
-            var stocksCostProfit = fifoStockCalculator.GetTotalCostAndProfit(StartDate, EndDate);
+            var stocksSummary = fifoStockCalculator.GetTotalCostAndProfit(StartDate, EndDate);
 
 
-
-            ExchangeRateCache.Inst.Dispose();
+            var summary = new TransactionsSummary()
+            {
+                ToDate = StartDate,
+                FromDate = EndDate,
+                Profit = optionsSummary.Profit + stocksSummary.Profit,
+                Cost = optionsSummary.Cost + stocksSummary.Cost
+            };
+            Console.WriteLine(summary);
 
             Console.Read();
         }

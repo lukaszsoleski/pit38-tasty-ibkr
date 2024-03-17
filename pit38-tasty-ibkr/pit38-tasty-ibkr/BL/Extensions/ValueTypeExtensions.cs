@@ -18,7 +18,14 @@ namespace pit38_tasty_ibkr.Extensions
             string valTmp = value;
 
             if (valTmp.Contains(","))
-                valTmp = valTmp.Replace(',', '.');
+            {
+                if(valTmp.IndexOf(",") == valTmp.Length - 3)// Sold 2 SPY 03/28/24 Call 498.00 FOR "1,120.00"
+                {
+                    throw new Exception("Invalid number formatting");
+                }
+
+                valTmp = value.Replace(",", "").Replace(" ", "");
+            }
 
             if (decimal.TryParse(valTmp, out result))
                 return result;

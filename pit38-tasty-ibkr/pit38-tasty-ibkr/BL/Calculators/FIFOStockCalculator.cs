@@ -27,9 +27,9 @@ namespace pit38_tasty_ibkr
         {
             var sells = transactions.Where(x => x.TransactionDate.Date >= startDate && x.TransactionDate.Date <= endDate && x.ProfitLossPLN != 0);
 
-            var totalProfit = sells.Sum(x => x.AmountPLN);
+            var totalProfit = sells.Sum(x => Math.Abs(x.AmountPLN));
 
-            var totalCost = sells.Sum(x => x.FeesPLN) + sells.SelectMany(x => x.BuyReference).Sum(x => x.AmountPLN + x.FeesPLN);
+            var totalCost = sells.Sum(x => Math.Abs(x.FeesPLN)) + sells.SelectMany(x => x.BuyReference).Sum(x => Math.Abs(x.AmountPLN) + Math.Abs(x.FeesPLN));
 
             var result = new TransactionsSummary()
             {

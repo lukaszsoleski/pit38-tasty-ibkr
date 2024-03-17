@@ -158,21 +158,28 @@ namespace pit38_tasty_ibkr
         private static IEnumerable<TradeTT> LoadTastyTradeCSV()
         {
             // Get the current directory
-
+            var result = new List<TradeTT>();
             var files = GetDirectoryFiles().Select(x => new FileInfo(x));
 
-            var file = files.FirstOrDefault(x => x.Name.StartsWith("tastytrade_transactions"));
+            var filesInfo = files.Where(x => x.Name.StartsWith("tastytrade_transactions")).Distinct().ToList();
 
-            if (file == null)
+            if (filesInfo == null || !filesInfo.Any())
             {
                 Console.WriteLine("No tastytrade CSV found!");
-                return new List<TradeTT>();
+                
+                return result;  
             }
-            using (var reader = new StreamReader(file.FullName))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            foreach(var f in filesInfo)
             {
-                return csv.GetRecords<TradeTT>().ToList();
+                using (var reader = new StreamReader(f.FullName))
+                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+                {
+                    var records = csv.GetRecords<TradeTT>().ToList();
+
+                    result.AddRange(records);
+                }
             }
+            return result;
         }
 
         private static IEnumerable<TradeIBKR> LoadIBKRTradeCSV()

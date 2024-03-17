@@ -25,7 +25,7 @@ namespace pit38_tasty_ibkr
             {
                 var loaded = Load(code);
 
-                if (loaded != null)
+                if (loaded != null && loaded.Rates.Any() && loaded.Code == code)
                 {
                     exchangeRates.Add(code, loaded);
                 }
@@ -42,14 +42,21 @@ namespace pit38_tasty_ibkr
             {
                 var loaded = Load(rates.Code);
 
-                if(loaded != null)
+                if (loaded != null && loaded.Rates.Any() && loaded.Code == rates.Code)
                 {
                     exchangeRates.Add(rates.Code, loaded);
                 }
             }
             if (!exchangeRates.TryGetValue(rates.Code, out var currencyRates))
             {
-                currencyRates = new ExchangeRates();
+                currencyRates = new ExchangeRates()
+                {
+                    Code = rates.Code,
+                    Currency = rates.Currency,
+                    Table = rates.Table
+                };
+
+                exchangeRates.Add(rates.Code, currencyRates);
             }
             foreach (var newRate in rates.Rates)
             {
@@ -76,33 +83,36 @@ namespace pit38_tasty_ibkr
         {
             if (string.IsNullOrEmpty(r.Code)) throw new Exception("Empty Code");
 
-            if (r.Rates != null)
+            if (r.Rates != null && r.Rates.Any())
             {
                 r.Rates = r.Rates.OrderByDescending(x => x.EffectiveDate).ToList();
-            }
-            string json = JsonConvert.SerializeObject(this, Formatting.Indented);
+                
+                string json = JsonConvert.SerializeObject(r, Formatting.Indented);
 
-            File.WriteAllText($"{FileName}_{r.Code}.json", json);
+                File.WriteAllText($"{FileName}_{r.Code}.json", json);
+            }
         }
 
         private ExchangeRates Load(string code)
         {
-            try
-            {
-                string path = $"{FileName}_{code}.json";
 
-                if (File.Exists(path))
-                {
-                    string json = File.ReadAllText(path);
-
-                    return JsonConvert.DeserializeObject<ExchangeRates>(json);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
             return null;
+            //try
+            //{
+            //    string path = $"{FileName}_{code}.json";
+
+            //    if (File.Exists(path))
+            //    {
+            //        string json = File.ReadAllText(path);
+
+            //        return JsonConvert.DeserializeObject<ExchangeRates>(json);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
+            //return null;
         }
 
    

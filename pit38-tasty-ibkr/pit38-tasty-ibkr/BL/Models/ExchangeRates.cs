@@ -51,10 +51,6 @@ namespace pit38_tasty_ibkr.Model
                 Rates.Add(rate);
             }
         }
-
-
-
-       
     }
 
     public class Rate
